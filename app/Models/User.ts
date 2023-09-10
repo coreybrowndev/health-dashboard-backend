@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasOne, beforeSave, column, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
+import Profile from './Profile'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -17,6 +18,9 @@ export default class User extends BaseModel {
 
   @column({ serializeAs: null })
   public password: string
+
+  @hasOne(() => Profile)
+  public profile: HasOne<typeof Profile>
 
   //Make sure passwords are hashed before saving to the database
   @beforeSave()
