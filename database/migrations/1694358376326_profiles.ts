@@ -22,9 +22,10 @@ export default class extends BaseSchema {
       table.string('country_code')
       table.string('phone_number')
       table.timestamp('join_date').defaultTo(this.now())
+      table.string('img_url')
     })
     this.schema.alterTable(this.tableName, (table) => {
-      table.foreign('user_id').references('users.id')
+      table.foreign('user_id').references('users.id').onDelete('CASCADE')
     })
   }
 

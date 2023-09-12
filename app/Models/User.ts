@@ -19,7 +19,9 @@ export default class User extends BaseModel {
   @column({ serializeAs: null })
   public password: string
 
-  @hasOne(() => Profile)
+  @hasOne(() => Profile, {
+    foreignKey: 'user_id',
+  })
   public profile: HasOne<typeof Profile>
 
   //Make sure passwords are hashed before saving to the database

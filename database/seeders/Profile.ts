@@ -1,6 +1,5 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
-import Profile from 'App/Models/Profile'
 import { DateTime } from 'luxon'
 
 export default class extends BaseSeeder {
@@ -21,6 +20,7 @@ export default class extends BaseSeeder {
         country_code: '1',
         phone_number: '7655555555',
         join_date: DateTime.fromISO('2021-01-01').toSQLDate(),
+        img_url: '',
       },
       {
         user_id: 2,
@@ -36,6 +36,7 @@ export default class extends BaseSeeder {
         country_code: '1',
         phone_number: '7651111212',
         join_date: DateTime.fromISO('2021-01-01').toSQLDate(),
+        img_url: '',
       },
       {
         user_id: 3,
@@ -51,6 +52,7 @@ export default class extends BaseSeeder {
         country_code: '1',
         phone_number: '7654445555',
         join_date: DateTime.fromISO('2021-01-01').toSQLDate(),
+        img_url: '',
       },
     ])
   }

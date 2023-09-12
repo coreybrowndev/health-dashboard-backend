@@ -52,6 +52,9 @@ export default class Profile extends BaseModel {
   @column()
   public join_date: DateTime
 
+  @column()
+  public img_url: string | null
+
   @belongsTo(() => User, {
     foreignKey: 'user_id',
     localKey: 'id',

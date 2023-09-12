@@ -24,4 +24,11 @@ Route.get('/', async () => {
   return { hello: 'world' }
 })
 
-Route.post('/users/new', 'UsersController.create')
+Route.group(() => {
+  Route.post('/register', 'UsersController.store')
+  Route.delete('/account/deletion/:id', 'UsersController.destroy')
+  Route.post('/register/profile', 'ProfilesController.store')
+  Route.get('/profile/:id', 'ProfilesController.show')
+  Route.put('/profile/:id', 'ProfilesController.update')
+  Route.delete('/profile/deletion/:id', 'ProfilesController.destroy')
+}).prefix('api/v1/')
