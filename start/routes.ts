@@ -25,10 +25,18 @@ Route.get('/', async () => {
 })
 
 Route.group(() => {
-  Route.post('/register', 'UsersController.store')
-  Route.delete('/account/deletion/:id', 'UsersController.destroy')
-  Route.post('/register/profile', 'ProfilesController.store')
-  Route.get('/profile/:id', 'ProfilesController.show')
-  Route.put('/profile/:id', 'ProfilesController.update')
-  Route.delete('/profile/deletion/:id', 'ProfilesController.destroy')
+  Route.post('register', 'UsersController.register')
+  Route.post('login', 'UsersController.login')
+  Route.delete('users/:id', 'UsersController.destroy').middleware(['auth', 'verifyOwner'])
+  Route.post('logout', 'UsersController.logout').middleware('auth')
+  Route.get('users/:id', 'UsersController.show').middleware(['auth', 'verifyOwner'])
+  //Profile Routes
+  Route.post('users/:id/profile', 'ProfilesController.store').middleware('auth')
+  Route.get('profile/:id', 'ProfilesController.show').middleware(['auth', 'verifyOwner'])
+  Route.put('profile/:id', 'ProfilesController.update').middleware(['auth', 'verifyOwner'])
+  Route.delete('profile/:id', 'ProfilesController.destroy').middleware(['auth', 'verifyOwner'])
+  //Vital Sign Routes
+  Route.post('vitals/:id', 'VitalSignsController.store').middleware(['auth', 'verifyOwner'])
+  Route.get('vitals/:id', 'VitalSignsController.show').middleware(['auth', 'verifyOwner'])
+  Route.put('users/vitals/:id', 'VitalSignsController.update').middleware(['auth', 'verifyOwner'])
 }).prefix('api/v1/')

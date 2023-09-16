@@ -13,9 +13,11 @@ export enum GenderSelection {
 export default class ProfilesController {
   public async index() {}
 
-  public async show({ params, response }) {
+  public async show({ auth, params, response }) {
     const payload = params.id
     const profile = await Profile.findOrFail(payload)
+
+    await auth.authenticate()
 
     if (!profile) {
       return response.status(404).json({ message: 'Profile not found' })
@@ -24,16 +26,31 @@ export default class ProfilesController {
     return response.status(200).json(profile)
   }
 
-  public async store({ request, response }) {
+  public async store({ auth, request, response }) {
     const payload = await request.validate(CreateProfileValidator)
     payload.birthdate = payload.birthdate.toISODate()
+
     const profile = await Profile.create(payload)
-    return response.json(profile)
+
+    const user = await auth.authenticate()
+
+    if (!user) {
+      return response.status(401).json({ message: 'Unauthorized' })
+    }
+
+    profile.save()
+
+    return response.status(201).json(profile)
   }
 
-  public async update({ params, request, response }) {
+  public async update({ auth, params, request, response }) {
     const payload = await request.validate(UpdateProfileValidator)
     const profile = await Profile.findOrFail(params.id)
+    const user = await auth.authenticate()
+
+    if (!user) {
+      return response.status(401).json({ message: 'Unauthorized' })
+    }
 
     if (payload.birthdate) {
       payload.birthdate = payload.birthdate.toISODate()

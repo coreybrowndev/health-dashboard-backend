@@ -4,7 +4,7 @@ export default class extends BaseSchema {
   protected tableName = 'profiles'
 
   public async up() {
-    this.schema.createTable(this.tableName, (table) => {
+    this.schema.createTableIfNotExists(this.tableName, (table) => {
       table.increments('id')
       table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(this.now())
@@ -30,9 +30,15 @@ export default class extends BaseSchema {
   }
 
   public async down() {
+    const exists = await this.schema.hasTable(this.tableName)
+
+    if (exists) {
+      this.schema.dropTable(this.tableName)
+    }
     this.schema.alterTable(this.tableName, (table) => {
-      table.dropForeign('user_id')
+      if (exists) {
+        table.dropForeign('user_id')
+      }
     })
-    this.schema.dropTable(this.tableName)
   }
 }
